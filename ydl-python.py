@@ -1,10 +1,24 @@
+import os
 import youtube_dl
 
-ydl = youtube_dl.YoutubeDL({'outtmpl': '%(title)s.%(ext)s'})
+
+if not os.path.exists('images'):
+    os.makedirs('images')
+os.chdir('images')
+
+options = {
+    'outtmpl': '%(title)s.%(ext)s',
+    'format': 'bestaudio/best',  # choice of quality
+    'extractaudio': False,        # only keep the audio
+    'audioformat': "mp3",        # convert to mp3       # name the file the ID of the video
+    'noplaylist': True,          # only download single song, not playlist
+    'listformats': False,         # print a list of the formats to stdout and exit
+}
+
 
 def download_video(url):
 
-    with ydl:
+    with youtube_dl.YoutubeDL(options) as ydl:
         ydl.extract_info(f'{url}', download=True)
 
 def main():
